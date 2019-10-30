@@ -1,6 +1,6 @@
 # DSGVO | Cookie OptIn
 
-[README DE](README_DE.md)
+[README DE](README.md)
 
 A simple script to include Tracking-Scripts according to GDPR (german: DSGVO).
 The user can choose whether he wants to allow (Tracking-)Cookies or not. Only if he approves, the previously regsitered Tracking-Tools are loaded.
