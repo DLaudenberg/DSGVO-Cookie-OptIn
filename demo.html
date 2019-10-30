@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DSGVO | Cookie OptIn</title>
+
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+
+	<div class="container">
+
+		<h1 id="dsgvo--cookie-optin">DSGVO | Cookie OptIn</h1>
+		<p>Ein einfaches Script, um Tracking-Scripte DSGVO-konform einzubinden.<br>
+		Der Nutzer hat die Wahl, ob er (Tracking-)Cookie erlauben m&ouml;chte oder nicht. Erst, wenn er seine Zustimmung erteilt hat, werden die vorher registrierten Tracking-Tools geladen.</p>
+		<p>Die Entscheidung wird 30 Tage lang gespeichert.</p>
+		<h2 id="voraussetzung">Voraussetzung</h2>
+		<p>Der Banner, der den Infotext und die Links enth&auml;lt, ben&ouml;tigt die Klasse <code>dsgvo-cookie-optin-banner</code> - &uuml;ber diese Klasse wird der Banner nach abgegebener Entscheidung ausgeblendet.</p>
+		<p>Innerhalb des Banners liegen zwei Elemente (z.B. Buttons), die jeweils mit den Klassen <code>opt-in</code> und <code>opt-out</code> erhalten. Hier&uuml;ber wird die Entscheidung, die der Nutzer trifft, tats&auml;chlich ausgel&ouml;st.<br>
+		Alternativ k&ouml;nnen die Funktionen <code>.approveCookies()</code> und <code>.denyCookies()</code> (s.u.) manuell aufgerufen werden.</p>
+		<p>Das Script ist stand-alone; es bestehen keine weiteren Abh&auml;ngigkeiten zu anderen JavaScript-Frameworks.</p>
+		<h2 id="nutzung">Nutzung</h2>
+		<h3 id="script-einbinden">1. DSGVO-Cookie-OptIn-Script einbinden</h3>
+		<p>Wenn die Scripte nicht gebundled werden, wird der DSGVO-Cookie-OptIn als ScriptTag auf der Seite eingebunden:</p>
+		<pre><code>&lt;script src="path/to/dsgvo-cookie-optin.js"&gt;&lt;/script&gt;</code></pre>
+		<p>Das CSS ist nur f&uuml;r die Demo relevant und sollte nicht &uuml;bernommen werden.</p>
+		<h3 id="initialisieren">2. Initialisieren</h3>
+		<p>Der DSGVO-Cookie-OptIn wird als neues JavaScript-Objekt erstellt:</p>
+		<pre><code>var dsgvoCookieOptIn = new DsgvoCookieOptIn();</code></pre>
+		<h3 id="tracking-scripte-registrieren">3. Tracking-Scripte registrieren</h3>
+		<p>&uuml;ber die Funktion <code>.registerTrackingScript()</code> kann ein Tracking-Script registriert werden. Dieses wird gespeichert und erst initialisiert, wenn der Nutzer seine Zustimmung gegeben hat. &uuml;ber mehrfachen Aufruf der Funktion k&ouml;nnen mehrere Scripte registriert werden.</p>
+		<p>Beispiel: Einbinden von Google Analytics.</p>
+		<pre><code>var googleAnalytics = function() {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'XX-xxxxxxxx-x', 'none');
+    ga('set', 'anonymizeIp', true);
+    ga('send', 'pageview');
+}
+dsgvoCookieOptIn.registerTrackingScript(googleAnalytics);
+
+dsgvoCookieOptIn.registerTrackingScript(function() {
+	// ...
+});</code></pre>
+		<h3 id="cookie-check-starten">4. Cookie-Check starten</h3>
+		<p>Via <code>.init()</code> wird der eigentliche Prozess gestartet. Das geschieht am besten nach <code>document.ready</code>.</p>
+		<pre><code>dsgvoCookieOptIn.init();</code></pre>
+		<h2 id="methoden">Methoden</h2>
+		<h3 id="registertrackingscript"><code>.registerTrackingScript()</code></h3>
+		<p>Registriert Scripte, die ausgef&uuml;hrt werden, wenn der User seine Zustimmung gegeben hat.</p>
+		<p>Wichtig: Die Funktion <code>registerTrackingScript</code> muss <strong>vor</strong> der Funktion <code>init</code> ausgef&uuml;hrt werden.</p>
+		<h3 id="unregistertrackingscript"><code>.unregisterTrackingScript()</code></h3>
+		<p>Meldet Scripte wieder ab, die zuvor registriert wurden.<br>
+		In diesem Kontext hat die Funktion eigentlich keinen Nutzen, aber f&uuml;r das <a href="https://www.geeksforgeeks.org/observer-pattern-set-1-introduction/" target="_blank">Observer Design Pattern</a> geh&ouml;rt es dazu :-)</p>
+		<h3 id="gettrackingscripts"><code>.getTrackingScripts()</code></h3>
+		<p>Gibt alle registrierten Scripte zur&uuml;ck, um sie z.B. in der DevTools-Console auszugeben.</p>
+		<h3 id="init"><code>.init()</code></h3>
+		<p>Startet den Cookie-Check. Die gesetzten Cookies werden validiert und - je nachdem - der Banner ausgeblendet und ggf. die registrierten Scripte ausgef&uuml;hrt.</p>
+		<p>Wichtig: Die Funktion <code>init</code> muss <strong>nach</strong> der Funktion <code>registerTrackingScript</code> ausgef&uuml;hrt werden.</p>
+		<h3 id="approvecookies"><code>.approveCookies()</code></h3>
+		<p>Setzt die entsprechenden Cookies, um die Entscheidung f&uuml;r den n&auml;chsten Seitenaufruf zu speichern, und f&uuml;hrt die registrierten Scripte aus.</p>
+		<h3 id="denycookies"><code>.denyCookies()</code></h3>
+		<p>Setzt die entsprechenden Cookies, um die Entscheidung f&uuml;r den n&auml;chsten Seitenaufruf zu speichern. Die registrierten Scripte werden demnach nicht ausgef&uuml;hrt.</p>
+		<h2 id="abgrenzung">Abgrenzung</h2>
+		<ul>
+			<li>
+				<p><em>Keine L&ouml;schung von bereits existierenden Cookies</em><br>
+				Der DSGVO-Cookie-OptIn reguliert nur, ob die registrierten Scripte ausgef&uuml;hrt werden oder nicht. Ein L&ouml;schen von bereits gesetzten Cookies wird nicht unterst&uuml;tzt.</p>
+			</li>
+			<li>
+				<p><em>Script-Tags m&uuml;ssen selbst erstellt werden</em><br>
+				Da einige Tracking-Tools Funktionen ben&ouml;tigen, die &uuml;ber das einfache erstellen eine Script-Tags mit gegebener <code>src</code> hinaus gehen, wird das Erstellen dieser Tags nicht unterst&uuml;tzt und muss vom registrierten Script selbst &uuml;bernommen werden.</p>
+				<ul>
+					<li>Das einfache Erstellen eines Scriptes funktioniert z.B. &uuml;ber folgende Funktion:</li>
+				</ul>
+				<pre><code>function loadJS(u) { var r = document.getElementsByTagName('script')[0], s = document.createElement('script'); s.src = u; r.parentNode.insertBefore(s, r); }
+loadJS('/js/vendor/tracking.min.js');</code></pre>
+			</li>
+			<li>
+				<p><em>Keine M&ouml;glichkeit f&uuml;r custom Einstellungen</em><br>
+				Das Script nimmt zur Zeit keine Parameter entgegen und kann entsprechend nicht &uuml;ber Parameter o.&auml;. gesteuert werden.</p>
+			</li>
+			<li>
+				<p><em>Nutzt eigene Cookies</em><br>
+				Ein Script, das Cookies verhindern soll, kommt selbst leider nicht ohne Cookies aus. Das Script nutzt eigene Cookies, um die Nutzerentscheidung f&uuml;r n&auml;chste Seitenbesuche zu speichern. Das sollte so auch entsprechend in der Formulierung der Cookie-Richtlinie ber&uuml;cksichtigt werden.<br>
+				Die verwendeten Cookies sind <code>dsgvoCookieOptinDecided</code> und <code>dsgvoCookieOptinApproved</code>.</p>
+			</li>
+		</ul>
+
+	</div>
+
+	<div class="dsgvo-cookie-optin-banner">
+		<p><b>Cookie-OptIn</b></p>
+		<p>Um unser Angebot besser auf unsere Nutzer abstimmen zu k&ouml;nnen, nutzen wir Tracking-Cookies von Drittanbietern. Gem&auml;&szlig; DSGVO k&ouml;nnen Sie der Verwendung explizit zustimmen oder diese untersagen.</p>
+		<p>Weitere Informationen finden Sie in unserer <a href="#">Cookie-Richtlinie</a>.</p>
+		<p>
+			<button class="opt-in success">Zustimmen.</button>
+			<button class="opt-out hollow">Bitte nicht tracken.</button>
+		</p>
+	</div>
+
+	<!-- <script src="libs/js-cookie-master/js.cookie.min.js"></script> -->
+	<script src="js/dsgvo-cookie-optin.js"></script>
+
+	<script type="text/javascript">
+		var dsgvoCookieOptIn = new DsgvoCookieOptIn();
+
+		var googleAnalytics = function() {
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'XX-xxxxxxxx-x', 'none');
+			ga('set', 'anonymizeIp', true);
+			ga('send', 'pageview');
+		}
+		dsgvoCookieOptIn.registerTrackingScript(googleAnalytics);
+
+		dsgvoCookieOptIn.init();
+	</script>
+
+</body>
+</html>

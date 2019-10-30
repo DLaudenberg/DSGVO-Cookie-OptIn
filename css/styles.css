@@ -1,0 +1,96 @@
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	font: 16px/1 Verdana, Arial, sans-serif;
+	background-color: #f2f2f2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 1.2;
+}
+p {
+	line-height: 1.6;
+}
+
+h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child, p:first-child {
+	margin-top: 0;
+}
+
+h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, h6:last-child, p:last-child {
+	margin-bottom: 0;
+}
+
+a {
+	color: #336699;
+}
+
+:not(pre) > code {
+	display: inline-block;
+	padding: 0.2em;
+	background: #f0f0f0;
+	border-radius: 0.2em;
+}
+pre {
+    background: #f0f0f0;
+    padding: 1em;
+    overflow: auto;
+    border-radius: 0.2em;
+}
+
+pre code {
+    line-height: 1.2;
+}
+
+.container {
+	width: 100%;
+	max-width: 80%;
+	margin: 2em auto 2em 10%;
+	padding: 2em 1em;
+	background-color: #ffffff;
+	box-shadow: 0 0 0.5em 0 rgba(0,0,0,0.2);
+}
+
+.dsgvo-cookie-optin-banner {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #404040;
+	color: #fff;
+	padding: 1em;
+}
+
+.dsgvo-cookie-optin-banner a {
+	color: inherit;
+}
+
+.dsgvo-cookie-optin-banner button {
+	font: inherit;
+	border: 1px solid #fff;
+	background: none #336699;
+	color: #fff;
+	border-radius: 0;
+	padding: 0.5em 1em;
+	outline: none;
+	cursor: pointer;
+}
+
+.dsgvo-cookie-optin-banner button.hollow {
+	background: none transparent;
+}
+
+.dsgvo-cookie-optin-banner > *:first-child {
+	margin-top: 0;
+}
+.dsgvo-cookie-optin-banner > *:last-child {
+	margin-bottom: 0;
+}
