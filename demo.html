@@ -45,7 +45,17 @@ dsgvoCookieOptIn.registerTrackingScript(function() {
 });</code></pre>
 		<h3 id="cookie-check-starten">4. Cookie-Check starten</h3>
 		<p>Via <code>.init()</code> wird der eigentliche Prozess gestartet. Das geschieht am besten nach <code>document.ready</code>.</p>
-		<pre><code>dsgvoCookieOptIn.init();</code></pre>
+		<pre><code>function ready(fn) {
+    if (document.readyState != 'loading'){
+        fn();
+    } else {
+        document.addEventListener('DOMContentLoaded', fn);
+    }
+}
+
+ready(function() {
+    dsgvoCookieOptIn.init();
+});</code></pre>
 		<h2 id="methoden">Methoden</h2>
 		<h3 id="registertrackingscript"><code>.registerTrackingScript()</code></h3>
 		<p>Registriert Scripte, die ausgef&uuml;hrt werden, wenn der User seine Zustimmung gegeben hat.</p>

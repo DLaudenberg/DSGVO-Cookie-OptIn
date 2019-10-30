@@ -64,7 +64,17 @@ dsgvoCookieOptIn.registerTrackingScript(function() {
 Via `init` the actual process is startet. Optimally this happens after `document.ready`.
 
 ```javascript
-dsgvoCookieOptIn.init();
+function ready(fn) {
+  if (document.readyState != 'loading'){
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
+
+ready(function() {
+  dsgvoCookieOptIn.init();
+})
 ```
 
 ## Methods
