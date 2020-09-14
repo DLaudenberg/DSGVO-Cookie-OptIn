@@ -52,10 +52,18 @@ function DsgvoCookieOptIn() {
 	var cookieButtonOptInClassName  = "opt-in";
 	var cookieButtonOptOutClassName = "opt-out";
 
+	var isDebugMode = true;
+
 	// PRIVATE METHODS
 
+	var debugLog = function(message) {
+
+		if (isDebugMode)
+			console.log(message);
+	}
+
 	var implementTrackingScripts = function() {
-		console.log("implementTrackingScripts");
+		debugLog("implementTrackingScripts");
 
 		for( var i = 0, ii = _scripts.length; i < ii; i++) {
 			
@@ -68,7 +76,7 @@ function DsgvoCookieOptIn() {
 	}
 
 	var hideCookieBanner = function() {
-		console.log("hideCookieBanner");
+		debugLog("hideCookieBanner");
 
 		var banner = document.getElementsByClassName(cookieBannerClassName);
 		for( var i = 0, ii = banner.length; i < ii; i++) {
@@ -81,19 +89,19 @@ function DsgvoCookieOptIn() {
 	var setCookie = {
 
 		decided : function() {
-			console.log("setCookie.decided");
+			debugLog("setCookie.decided");
 
 			Cookies.set(cookieDecidedName, "1", cookieDurationInDays);
 		},
 
 		approved : function() {
-			console.log("setCookie.approved");
+			debugLog("setCookie.approved");
 			
 			Cookies.set(cookieApprovedName, "1", cookieDurationInDays);
 		},
 
 		denied : function() {
-			console.log("setCookie.denied");
+			debugLog("setCookie.denied");
 			
 			Cookies.set(cookieApprovedName, "0", cookieDurationInDays);
 		}
@@ -102,7 +110,7 @@ function DsgvoCookieOptIn() {
 	var isCookie = {
 
 		decided : function() {
-			console.log("isCookie.decided");
+			debugLog("isCookie.decided");
 
 			var cookieConsentValue = Cookies.get(cookieDecidedName);
 
@@ -110,7 +118,7 @@ function DsgvoCookieOptIn() {
 		},
 
 		approved : function() {
-			console.log("isCookie.approved");
+			debugLog("isCookie.approved");
 
 			var cookieConsentValue = Cookies.get(cookieApprovedName);
 
@@ -122,13 +130,13 @@ function DsgvoCookieOptIn() {
 	// PUBLIC METHODS
 
 	this.registerTrackingScript = function(initScriptFunction) {
-		console.log("registerTrackingScript");
+		debugLog("registerTrackingScript");
 
 		_scripts.push( initScriptFunction );
 	}
 
 	this.unregisterTrackingScript = function(initScriptFunction) {
-		console.log("unregisterTrackingScript");
+		debugLog("unregisterTrackingScript");
 
 		_scripts = _scripts.filter(function(element, index, source) {
 
@@ -137,13 +145,13 @@ function DsgvoCookieOptIn() {
 	}
 
 	this.getTrackingScripts = function() {
-		console.log("getTrackingScripts");
+		debugLog("getTrackingScripts");
 
 		return _scripts;
 	}
 
 	this.init = function() {
-		console.log("init");
+		debugLog("init");
 
 		// INITIALIZE COOKIE-OPTIN
 		// prerequisite: tracker must have been registered by the dev by now
@@ -188,7 +196,7 @@ function DsgvoCookieOptIn() {
 	}
 
 	this.approveCookies = function() {
-		console.log("approveCookies");
+		debugLog("approveCookies");
 
 		// USER CLICKS "APPROVE"
 		
@@ -206,7 +214,7 @@ function DsgvoCookieOptIn() {
 	}
 	
 	this.denyCookies = function() {
-		console.log("denyCookies");
+		debugLog("denyCookies");
 
 		// USER CLICKS "DENY"
 		
